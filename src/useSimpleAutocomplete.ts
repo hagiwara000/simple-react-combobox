@@ -32,6 +32,8 @@ export type SimpleAutocompleteResult<T> = {
   listProps: ListProps;
   getItemProps: (index: number) => ItemProps;
   isOpen: boolean;
+  inputValue: string;
+  setOpen: (open: boolean) => void;
   highlightedIndex: number;
   highlightedItem?: T;
   filteredItems: readonly T[];
@@ -189,7 +191,9 @@ export function useSimpleAutocomplete<T>({
     inputProps,
     listProps,
     getItemProps,
+    inputValue,
     isOpen,
+    setOpen: (open: boolean) => setIsOpen(open),
     highlightedIndex,
     highlightedItem: getHighlightedItem(),
     filteredItems,
