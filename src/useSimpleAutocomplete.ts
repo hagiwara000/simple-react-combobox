@@ -8,6 +8,9 @@ import {
   useState,
 } from "react";
 import { ItemProps, ListProps, TextInputProps } from "./types";
+import { defaultFilter, FilterFn } from "./filter";
+import { moveHighlight } from "./highlight";
+import { canSelect } from "./selection";
 
 type InternalInputProps = TextInputProps & {
   value: string;
@@ -16,8 +19,6 @@ type InternalInputProps = TextInputProps & {
   onBlur: FocusEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
 };
-
-type FilterFn<T> = (items: readonly T[], inputValue: string) => readonly T[];
 
 export type SimpleAutocompleteOptions<T> = {
   items: readonly T[];
@@ -54,18 +55,11 @@ export function useSimpleAutocomplete<T>({
   const isComposingRef = useRef(false);
 
   /* ---------- filtering ---------- */
-  const defaultFilter: FilterFn<T> = (items, input) =>
-    input === ""
-      ? items
-      : items.filter((i) =>
-          itemToString(i).toLowerCase().includes(input.toLowerCase())
-        );
-
   const filteredItems = useMemo(
     () =>
       typeof filterFn === "function"
-        ? filterFn(items, inputValue)
-        : defaultFilter(items, inputValue),
+        ? filterFn(items, inputValue, itemToString)
+        : defaultFilter(items, inputValue, itemToString),
     [items, inputValue, filterFn]
   );
 
@@ -92,22 +86,17 @@ export function useSimpleAutocomplete<T>({
           setIsOpen(true);
           return;
         }
-        setHighlightedIndex((i) => Math.min(i + 1, filteredItems.length - 1));
+        setHighlightedIndex((i) => moveHighlight(i, 1, filteredItems.length));
         break;
       }
       case "ArrowUp": {
         e.preventDefault();
-        setHighlightedIndex((i) => Math.max(i - 1, 0));
+        setHighlightedIndex((i) => moveHighlight(i, -1, filteredItems.length));
         break;
       }
       case "Enter": {
-        if (
-          !isOpen ||
-          highlightedIndex < 0 ||
-          highlightedIndex >= filteredItems.length
-        ) {
-          return;
-        }
+        if (!canSelect(isOpen, highlightedIndex, filteredItems.length)) return;
+
         e.preventDefault();
         selectItem(filteredItems[highlightedIndex]);
         break;

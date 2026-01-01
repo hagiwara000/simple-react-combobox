@@ -9,16 +9,18 @@
     "dist"
   ],
   "devDependencies": {
+    "tsup": "^8.0.0",
     "typescript": "^5.5.0",
-    "tsup": "^8.0.0"
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
+    "@types/react": ">=18",
     "react": ">=18",
-    "react-dom": ">=18",
-    "@types/react": ">=18"
+    "react-dom": ">=18"
   },
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "vitest run"
   }
 }
