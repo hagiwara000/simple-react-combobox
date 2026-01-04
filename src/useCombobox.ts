@@ -20,7 +20,7 @@ type InternalInputProps = TextInputProps & {
   onFocus?: FocusEventHandler<HTMLInputElement>;
 };
 
-export type SimpleAutocompleteOptions<T> = {
+export type UseComboboxOptions<T> = {
   items: readonly T[];
   itemToString?: (item: T) => string;
   onSelect?: (item: T) => void;
@@ -28,7 +28,7 @@ export type SimpleAutocompleteOptions<T> = {
   filterFn?: FilterFn<T>;
 };
 
-export type SimpleAutocompleteResult<T> = {
+export type UseComboboxResult<T> = {
   inputProps: TextInputProps;
   listProps: ListProps;
   getItemProps: (index: number) => ItemProps;
@@ -40,13 +40,13 @@ export type SimpleAutocompleteResult<T> = {
   filteredItems: readonly T[];
 };
 
-export function useSimpleAutocomplete<T>({
+export function useCombobox<T>({
   items,
   itemToString = String,
   onSelect,
   openOnFocus = false,
   filterFn,
-}: SimpleAutocompleteOptions<T>): SimpleAutocompleteResult<T> {
+}: UseComboboxOptions<T>): UseComboboxResult<T> {
   const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);

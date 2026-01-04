@@ -21,7 +21,7 @@ npm install simple-react-combobox
 ## Basic Usage
 
 ```
-import { useSimpleAutocomplete } from "simple-react-combobox";
+import { useCombobox } from "simple-react-combobox";
 
 const items = ["Apple", "Banana", "Orange", "Grape"];
 
@@ -32,7 +32,7 @@ export function Example() {
     getItemProps,
     isOpen,
     filteredItems,
-  } = useSimpleAutocomplete({
+  } = useCombobox({
     items,
     onSelect: (item) => {
       console.log("selected:", item);
@@ -60,13 +60,13 @@ export function Example() {
 ## API
 
 ```
-useSimpleAutocomplete<T>(options)
+useCombobox<T>(options)
 ```
 
 ## Options
 
 ```
-type SimpleAutocompleteOptions<T> = {
+type UseComboboxOptions<T> = {
   items: readonly T[];
   itemToString?: (item: T) => string;
   onSelect?: (item: T) => void;
@@ -112,7 +112,7 @@ const defaultFilter: FilterFn<T> = (items, input) =>
 ## Return Value
 
 ```
-type SimpleAutocompleteResult<T> = {
+type UseComboboxResult<T> = {
   inputProps: TextInputProps;
   listProps: ListProps;
   getItemProps: (index: number) => ItemProps;
