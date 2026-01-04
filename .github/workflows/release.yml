@@ -16,6 +16,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+      - run: npm config list
       - run: npm ci
       - run: npm run build
       - run: npm publish --provenance --access public
+      - name: Show npm debug log
+        if: failure()
+        run: |
+          echo "=== npm debug log ==="
+          cat /home/runner/.npm/_logs/*debug*.log
