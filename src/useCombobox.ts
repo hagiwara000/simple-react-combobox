@@ -38,6 +38,7 @@ export type UseComboboxResult<T> = {
   highlightedIndex: number;
   highlightedItem?: T;
   filteredItems: readonly T[];
+  clearInput: () => void;
 };
 
 export function useCombobox<T>({
@@ -176,6 +177,8 @@ export function useCombobox<T>({
     return filteredItems[highlightedIndex];
   };
 
+  const clearInput = () => setInputValue("");
+
   return {
     inputProps,
     listProps,
@@ -186,5 +189,6 @@ export function useCombobox<T>({
     highlightedIndex,
     highlightedItem: getHighlightedItem(),
     filteredItems,
+    clearInput,
   };
 }
